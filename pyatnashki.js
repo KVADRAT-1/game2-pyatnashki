@@ -125,7 +125,12 @@ function moveLeft(stringMove, columnsMove) {
     }
 };
 
+function newGame() {
+    goStirCells()
+    gameUserWin.textContent = '';
+}
+
 goStirCells()
 
 gameWindow.addEventListener('click', goNumber);
-gameResetButton.addEventListener('click', goStirCells);
+gameResetButton.addEventListener('click', newGame);
