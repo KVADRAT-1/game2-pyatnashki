@@ -42,7 +42,7 @@ function checkWin() {
     }
     if (errorBuild == false) {
         stopGame = true;
-        gameUserWin.textContent = 'good boy';
+        gameUserWin.textContent = 'YOU WIN';
     }
 }
 
@@ -65,6 +65,8 @@ function goStirCells() {
     }
 }
 
+// ---------------------------------------------- REMAKE ---------
+
 function stirCells() {
     let stringNumberAuto = '';
     let columnsNumberAuto ='';
@@ -76,6 +78,8 @@ function stirCells() {
         if (stopGame == true) { goStirCells() }
     }
 }
+
+// ---------------------------------------------- REMAKE ---------
 
 
 function move(stringMove, columnsMove) {
