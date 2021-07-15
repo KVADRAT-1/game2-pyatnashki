@@ -11,6 +11,87 @@ let columnsNumber = 0;
 let win = [[1, 2, 3, 4],[5, 6, 7, 8],[9, 10, 11, 12],[13, 14, 15, '']];
 let cellNumber = [[3, 11, 8, 2],[14, 13, 12, 10],[4, 15, 9, 1],[6, 7, 5, '']];
 
+function moveDigit(e) {
+    if (stopGame == true) { return }
+    if (e.target.classList[0] === 'game__window') { return }
+    for (stringNumber = 0; stringNumber < 4; stringNumber++) {
+        for (columnsNumber = 0; columnsNumber < 4; columnsNumber++) {
+            if (cellNumber[stringNumber][columnsNumber] == e.target.textContent) {
+                move(stringNumber, columnsNumber)
+                addNumbers();
+                checkWin()
+            }
+        }
+    }
+}
+
+function move(stringMove, columnsMove) {
+    if (stringMove > 0) {
+        if (cellNumber[stringMove - 1][columnsMove] === '') {
+            cellNumber[stringMove - 1][columnsMove] = cellNumber[stringMove][columnsMove];
+            cellNumber[stringMove][columnsMove] = '';
+        }
+    };
+    if (columnsMove > 0) {
+        if (cellNumber[stringMove][columnsMove - 1] === '') {
+            cellNumber[stringMove][columnsMove - 1] = cellNumber[stringMove][columnsMove];
+            cellNumber[stringMove][columnsMove] = '';
+        }
+    };
+    if (stringMove < 3) {
+        if (cellNumber[stringMove + 1][columnsMove] === '') {
+            cellNumber[stringMove + 1][columnsMove] = cellNumber[stringMove][columnsMove];
+            cellNumber[stringMove][columnsMove] = '';
+        }
+    };
+    if (columnsMove < 3) {
+        if (cellNumber[stringMove][columnsMove + 1] === '') {
+            cellNumber[stringMove][columnsMove + 1] = cellNumber[stringMove][columnsMove];
+            cellNumber[stringMove][columnsMove] = '';
+        }
+    };
+};
+
+function newGame() {
+    gameUserWin.textContent = '';
+    stopGame = false;
+    for (let i = 0; i < 250; i++) {
+        findEmptyCell();
+    }
+    addNumbers();
+}
+
+function findEmptyCell() {
+    for (stringNumber = 0; stringNumber < 4; stringNumber++) {
+        for (columnsNumber = 0; columnsNumber < 4; columnsNumber++) {
+            if (cellNumber[stringNumber][columnsNumber] == '') {
+                    autoMove(stringNumber, columnsNumber);
+                return;
+            }
+        }
+    }
+}
+
+function autoMove(stringMove, columnsMove) {
+    let randomNumber = Math.floor((Math.random() * 4));
+    if (stringMove > 0 && randomNumber == 0) {
+        cellNumber[stringMove][columnsMove] = cellNumber[stringMove - 1][columnsMove];
+        cellNumber[stringMove - 1][columnsMove] = '';
+    }
+    if (columnsMove > 0 && randomNumber == 1) {
+        cellNumber[stringMove][columnsMove] = cellNumber[stringMove][columnsMove - 1];
+        cellNumber[stringMove][columnsMove - 1] = '';
+    }
+    if (stringMove < 3 && randomNumber == 2) {
+        cellNumber[stringMove][columnsMove] = cellNumber[stringMove + 1][columnsMove];
+        cellNumber[stringMove + 1][columnsMove] = '';
+    }
+    if (columnsMove < 3 && randomNumber == 3) {
+        cellNumber[stringMove][columnsMove] = cellNumber[stringMove][columnsMove + 1];
+        cellNumber[stringMove][columnsMove + 1] = '';
+    }
+}
+
 function addNumbers() {
     columnsNumber = 0;
     stringNumber = 0;
@@ -46,95 +127,7 @@ function checkWin() {
     }
 }
 
-function goNumber(e) {
-    if (stopGame == true) { return }
-    if (e.target.classList[0] === 'game__window') { return }
-    for (stringNumber = 0; stringNumber < 4; stringNumber++) {
-        for (columnsNumber = 0; columnsNumber < 4; columnsNumber++) {
-            if (cellNumber[stringNumber][columnsNumber] == e.target.textContent) {
-                move(stringNumber, columnsNumber)
-                checkWin()
-            }
-        }
-    }
-}
+newGame()
 
-function goStirCells() {
-    for (let i = 0; i < 1000; i++) {
-        stirCells();
-    }
-}
-
-// ---------------------------------------------- REMAKE ---------
-
-function stirCells() {
-    let stringNumberAuto = '';
-    let columnsNumberAuto ='';
-    for (stringNumberAuto = 0; stringNumberAuto < 4; stringNumberAuto++) {
-        for (columnsNumberAuto = 0; columnsNumberAuto < 4; columnsNumberAuto++) {
-            move(Math.floor(Math.random() * (stringNumberAuto + 1)), Math.floor(Math.random() * (columnsNumberAuto + 1)))
-        }
-        checkWin()
-        if (stopGame == true) { goStirCells() }
-    }
-}
-
-// ---------------------------------------------- REMAKE ---------
-
-
-function move(stringMove, columnsMove) {
-    moveTop(stringMove, columnsMove)
-    moveRight(stringMove, columnsMove)
-    moveBottom(stringMove, columnsMove)
-    moveLeft(stringMove, columnsMove)
-};
-
-function moveTop(stringMove, columnsMove) {
-    if (stringMove > 0) {
-        if (cellNumber[stringMove - 1][columnsMove] === '') {
-            cellNumber[stringMove - 1][columnsMove] = cellNumber[stringMove][columnsMove];
-            cellNumber[stringMove][columnsMove] = '';
-            addNumbers();
-        }
-    }
-};
-
-function moveRight(stringMove, columnsMove) {
-    if (columnsMove > 0) {
-        if (cellNumber[stringMove][columnsMove - 1] === '') {
-            cellNumber[stringMove][columnsMove - 1] = cellNumber[stringMove][columnsMove];
-            cellNumber[stringMove][columnsMove] = '';
-            addNumbers();
-        }
-    }
-};
-
-function moveBottom(stringMove, columnsMove) {
-    if (stringMove < 3) {
-        if (cellNumber[stringMove + 1][columnsMove] === '') {
-            cellNumber[stringMove + 1][columnsMove] = cellNumber[stringMove][columnsMove];
-            cellNumber[stringMove][columnsMove] = '';
-            addNumbers();
-        }
-    }
-};
-
-function moveLeft(stringMove, columnsMove) {
-    if (columnsMove < 3) {
-        if (cellNumber[stringMove][columnsMove + 1] === '') {
-            cellNumber[stringMove][columnsMove + 1] = cellNumber[stringMove][columnsMove];
-            cellNumber[stringMove][columnsMove] = '';
-            addNumbers();
-        }
-    }
-};
-
-function newGame() {
-    goStirCells()
-    gameUserWin.textContent = '';
-}
-
-goStirCells()
-
-gameWindow.addEventListener('click', goNumber);
+gameWindow.addEventListener('click', moveDigit);
 gameResetButton.addEventListener('click', newGame);
