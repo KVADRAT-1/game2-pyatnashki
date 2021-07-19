@@ -1,11 +1,8 @@
-const body = document.querySelector('.body');
-const game = body.querySelector('.game');
-const gameUserWin = game.querySelector('.game__user-win');
-const gameWindow = game.querySelector('.game__window');
-const gameCellAll = game.querySelectorAll('.game__cell');
-const gameResetButton = game.querySelector('.game__reset-button');
+import { headerRestartButton, headerUserWin, game, gameCellAll } from '../utils/selectors.js';
+import { stopwatch } from './stopwatch.js';
 
 let stopGame = false;
+let activeStopwatch = false;
 let stringNumber = 0;
 let columnsNumber = 0;
 let win = [[1, 2, 3, 4],[5, 6, 7, 8],[9, 10, 11, 12],[13, 14, 15, '']];
@@ -17,15 +14,19 @@ function moveDigit(e) {
     for (stringNumber = 0; stringNumber < 4; stringNumber++) {
         for (columnsNumber = 0; columnsNumber < 4; columnsNumber++) {
             if (cellNumber[stringNumber][columnsNumber] == e.target.textContent) {
-                move(stringNumber, columnsNumber)
+                moveCell(stringNumber, columnsNumber);
+                if (!activeStopwatch) { 
+                    stopwatch(true);
+                    activeStopwatch = true;
+                };
                 addNumbers();
-                checkWin()
+                checkWin();
             }
         }
     }
 }
 
-function move(stringMove, columnsMove) {
+function moveCell(stringMove, columnsMove) {
     if (stringMove > 0) {
         if (cellNumber[stringMove - 1][columnsMove] === '') {
             cellNumber[stringMove - 1][columnsMove] = cellNumber[stringMove][columnsMove];
@@ -52,9 +53,11 @@ function move(stringMove, columnsMove) {
     };
 };
 
-function newGame() {
-    gameUserWin.textContent = '';
+function restartGame() {
+    headerUserWin.textContent = '';
     stopGame = false;
+    stopwatch(false);
+    activeStopwatch = false;
     for (let i = 0; i < 250; i++) {
         findEmptyCell();
     }
@@ -65,14 +68,14 @@ function findEmptyCell() {
     for (stringNumber = 0; stringNumber < 4; stringNumber++) {
         for (columnsNumber = 0; columnsNumber < 4; columnsNumber++) {
             if (cellNumber[stringNumber][columnsNumber] == '') {
-                    autoMove(stringNumber, columnsNumber);
+                    autoMoveCell(stringNumber, columnsNumber);
                 return;
             }
         }
     }
 }
 
-function autoMove(stringMove, columnsMove) {
+function autoMoveCell(stringMove, columnsMove) {
     let randomNumber = Math.floor((Math.random() * 4));
     if (stringMove > 0 && randomNumber == 0) {
         cellNumber[stringMove][columnsMove] = cellNumber[stringMove - 1][columnsMove];
@@ -123,11 +126,13 @@ function checkWin() {
     }
     if (errorBuild == false) {
         stopGame = true;
-        gameUserWin.textContent = 'YOU WIN';
+        headerUserWin.textContent = 'YOU WIN';
+        stopwatch(false);
+        activeStopwatch = false;
     }
 }
 
-newGame()
+restartGame()
 
-gameWindow.addEventListener('click', moveDigit);
-gameResetButton.addEventListener('click', newGame);
+game.addEventListener('click', moveDigit);
+headerRestartButton.addEventListener('click', restartGame);

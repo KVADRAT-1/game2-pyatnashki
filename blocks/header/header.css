@@ -1,0 +1,7 @@
+.header {
+    width: 600px;
+    text-align: center;
+    vertical-align: center;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+}
