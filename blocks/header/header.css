@@ -5,3 +5,15 @@
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
 }
+
+@media (max-width: 768px) {
+    .header {
+        width: 400px;
+    }
+}
+
+@media (max-width: 500px) {
+    .header {
+        width: 200px;
+    }
+}
