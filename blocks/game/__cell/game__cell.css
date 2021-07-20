@@ -7,12 +7,12 @@
 
 @media (max-width: 768px) {
     .game__cell {
-        font-size: 60px;
+        font-size: 70px;
     }
 }
 
 @media (max-width: 500px) {
     .game__cell {
-        font-size: 30px;
+        font-size: 50px;
     }
 }
